@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import CustomInput from "../../components/custom-input/CustomInput";
+import { toast } from "react-toastify";
+import { postNewAdmin } from "../../helpers/axiosHelper";
 
 const SignUp = () => {
   const [form, setForm] = useState({});
@@ -68,7 +70,13 @@ const SignUp = () => {
 
       !regularExpression.test(value) &&
         setPasswordValidationError(
-          "Password must include atleast one uppercase, one lowercase, one number, one special character and be between 6 to 16 characters long"
+          `Password must be between 6 to 16 characters\n
+          Include atleast:\n
+          1. one uppercase\n
+          2. one lowercase\n
+          3. one number\n
+          4. one special character
+          5. and no spaces`
         );
     }
 
@@ -90,10 +98,25 @@ const SignUp = () => {
         "Oops! Passwords do not match. Please double-check and try again. Your security is our priority!"
       );
     }
+
+    // if password match, call api to store admin data
+    const adminPromise = postNewAdmin(rest);
+
+    toast.promise(adminPromise, {
+      pending: "Please wait...",
+      // success:
+      //   "We have sent you an email with instruction to verify your email. Please check your inbox or spam folder!",
+      // error:
+      //   "Error! Unable to process your request. Please try again or contact admin!",
+    });
+
+    const { status, message } = await adminPromise;
+
+    toast[status](message);
   };
 
   return (
-    <Container fluid className="main-container ">
+    <Container fluid>
       <Row className="d-flex justify-content-center align-items-center gap-3 vh-100">
         <Col md={true}>
           <p className="rounded shadow-lg p-3 text-center fw-bold">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Container, Spinner } from "react-bootstrap";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { postVerifyEmail } from "../../helpers/axiosHelper";
 
 const VerifyEmail = () => {

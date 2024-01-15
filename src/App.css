@@ -1,0 +1,35 @@
+App.css .main {
+  min-height: 83vh;
+  background: rgba(205, 225, 255, 0.729);
+}
+
+.admin-layout {
+  display: flex;
+}
+.admin-layout .side-bar {
+  width: 230px;
+  position: fixed;
+  height: 100vh;
+}
+.admin-layout .main {
+  margin-left: 230px;
+  width: calc(100vw - 230px);
+}
+
+.page-content {
+  min-height: 83vh;
+}
+
+.sid-nav li {
+  line-height: 3rem;
+  font-weight: 600;
+  /* font-size: 1.3rem; */
+}
+
+.reset-pass form {
+  width: 450px;
+  margin: auto;
+  box-shadow: -5px 5px 10px grey;
+  padding: 1rem;
+  border-radius: 10px;
+}

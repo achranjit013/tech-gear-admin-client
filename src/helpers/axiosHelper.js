@@ -8,7 +8,7 @@ const getAccessJWT = () => {
 };
 
 const getRefreshJWT = () => {
-  return sessionStorage.getItem("accessJWT");
+  return localStorage.getItem("refreshJWT");
 };
 
 const axiosProcessor = async ({

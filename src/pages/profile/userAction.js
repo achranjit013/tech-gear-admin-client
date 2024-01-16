@@ -12,6 +12,7 @@ export const getUserProfile = () => async (dispatch) => {
 
 export const autoLogin = () => async (dispatch) => {
   // check if we have access jwt, then fetch user
+  console.log("auto login");
   const accessJWT = sessionStorage.getItem("accessJWT");
   console.log(accessJWT);
   if (accessJWT) {

@@ -114,3 +114,25 @@ export const logoutUser = (_id) => {
     },
   });
 };
+
+// request otp
+export const requestOTP = (email) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "post",
+    url: userAPI + "/request-otp",
+    data: {
+      email,
+    },
+  });
+};
+
+// update password
+export const updatePassword = (data) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "patch",
+    url: userAPI,
+    data,
+  });
+};

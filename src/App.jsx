@@ -13,6 +13,7 @@ import Customer from "./pages/customer/Customer";
 import MyProfile from "./pages/profile/MyProfile";
 import AdminUser from "./pages/admin-user/AdminUser";
 import { PrivateRoute } from "./components/private-route/PrivateRoute";
+import ResetPassword from "./pages/sign-in-up/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         {/* public route */}
         <Route path="/" element={<LogIn />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* private route */}
         <Route path="/admin-signup" element={<SignUp />} />

@@ -127,12 +127,22 @@ export const requestOTP = (email) => {
   });
 };
 
-// update password
+// reset password
 export const updatePassword = (data) => {
   console.log("i am in axios");
   return axiosProcessor({
     method: "patch",
     url: userAPI,
     data,
+  });
+};
+// update password
+export const updateUserPassword = (data) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "patch",
+    url: userAPI + "/password-update",
+    data,
+    isPrivate: true,
   });
 };

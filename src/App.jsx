@@ -14,6 +14,7 @@ import MyProfile from "./pages/profile/MyProfile";
 import AdminUser from "./pages/admin-user/AdminUser";
 import { PrivateRoute } from "./components/private-route/PrivateRoute";
 import ResetPassword from "./pages/sign-in-up/ResetPassword";
+import { UpdatePasswordForm } from "./components/admin-profile/UpdatePasswordForm";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/password-update" element={<UpdatePasswordForm />} />
 
         {/* private route */}
         <Route path="/admin-signup" element={<SignUp />} />

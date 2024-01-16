@@ -2,6 +2,7 @@ import axios from "axios";
 
 const rootAPI = import.meta.env.VITE_ROOT_API;
 const userAPI = rootAPI + "/users";
+const catAPI = rootAPI + "/categories";
 
 const getAccessJWT = () => {
   return sessionStorage.getItem("accessJWT");
@@ -136,6 +137,7 @@ export const updatePassword = (data) => {
     data,
   });
 };
+
 // update password
 export const updateUserPassword = (data) => {
   console.log("i am in axios");
@@ -144,5 +146,26 @@ export const updateUserPassword = (data) => {
     url: userAPI + "/password-update",
     data,
     isPrivate: true,
+  });
+};
+
+// get categories
+export const fetchCatgeories = () => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "get",
+    url: catAPI,
+    isPrivate: true,
+  });
+};
+
+// post categories
+export const postCatgeory = (data) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "post",
+    url: catAPI,
+    isPrivate: true,
+    data,
   });
 };

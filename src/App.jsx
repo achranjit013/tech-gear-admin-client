@@ -15,8 +15,17 @@ import AdminUser from "./pages/admin-user/AdminUser";
 import { PrivateRoute } from "./components/private-route/PrivateRoute";
 import ResetPassword from "./pages/sign-in-up/ResetPassword";
 import { UpdatePasswordForm } from "./components/admin-profile/UpdatePasswordForm";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getAllCats } from "./pages/category/categoryAction";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCats());
+  }, [dispatch]);
+
   return (
     <>
       <Routes>

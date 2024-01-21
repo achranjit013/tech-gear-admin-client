@@ -16,9 +16,9 @@ const LogIn = () => {
   const { admin } = useSelector((state) => state.adminInfo);
 
   useEffect(() => {
-    admin?._id && navigate("dashboard");
+    admin?._id && navigate("/dashboard");
     dispatch(autoLogin());
-  }, [admin?._id, navigate]);
+  }, [admin?._id, navigate, dispatch]);
 
   const inputs = [
     {

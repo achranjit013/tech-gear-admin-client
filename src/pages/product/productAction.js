@@ -1,6 +1,10 @@
 import { toast } from "react-toastify";
-import { fetchProducts, postProducts } from "../../helpers/axiosHelper";
-import { setProductList } from "./productSlice";
+import {
+  fetchProducts,
+  postProducts,
+  updateProduct,
+} from "../../helpers/axiosHelper";
+import { setProductList, setSelectedProduct } from "./productSlice";
 
 export const getAllProducts = () => async (dispatch) => {
   const { status, message, products } = await fetchProducts();
@@ -9,6 +13,15 @@ export const getAllProducts = () => async (dispatch) => {
     dispatch(setProductList(products));
   }
 };
+
+export const getAProduct = (_id) => async (dispatch) => {
+  const { status, message, products } = await fetchProducts(_id);
+
+  if (status === "success") {
+    dispatch(setSelectedProduct(products));
+  }
+};
+
 export const postAProduct = (obj) => async (dispatch) => {
   const pending = postProducts(obj);
 
@@ -21,5 +34,20 @@ export const postAProduct = (obj) => async (dispatch) => {
 
   if (status === "success") {
     dispatch(getAllProducts());
+  }
+};
+
+export const updateAProduct = (_id, obj) => async (dispatch) => {
+  const pending = updateProduct(obj);
+
+  toast.promise(pending, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await pending;
+  toast[status](message);
+
+  if (status === "success") {
+    dispatch(getAProduct(_id));
   }
 };

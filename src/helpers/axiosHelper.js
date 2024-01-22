@@ -174,11 +174,11 @@ export const postCatgeory = (data) => {
 };
 
 // get products
-export const fetchProducts = () => {
+export const fetchProducts = (_id) => {
   console.log("i am in axios");
   return axiosProcessor({
     method: "get",
-    url: prodAPI,
+    url: _id ? prodAPI + "/" + _id : prodAPI,
     isPrivate: true,
   });
 };
@@ -188,6 +188,16 @@ export const postProducts = (data) => {
   console.log("i am in axios");
   return axiosProcessor({
     method: "post",
+    url: prodAPI,
+    isPrivate: true,
+    data,
+  });
+};
+// get products
+export const updateProduct = (data) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "put",
     url: prodAPI,
     isPrivate: true,
     data,

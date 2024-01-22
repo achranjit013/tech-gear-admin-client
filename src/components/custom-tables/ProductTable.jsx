@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../../pages/product/productAction";
+import { Link } from "react-router-dom";
 
 function ProductTable() {
   const dispatch = useDispatch();
@@ -66,7 +67,9 @@ function ProductTable() {
                   Price: {price} <br /> Sales Price: {salesPrice}
                 </td>
                 <td>
-                  <Button variant="warning">Edit</Button>
+                  <Link to={`/product/edit/${_id}`}>
+                    <Button variant="warning">Edit</Button>
+                  </Link>
                 </td>
               </tr>
             )

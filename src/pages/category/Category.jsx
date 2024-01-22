@@ -41,7 +41,7 @@ const Category = () => {
           </Row>
         </Form>
       </div>
-      To Do... <br />
+
       <CategoryTable />
     </AdminLayout>
   );

@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCats } from "../../pages/category/categoryAction";
 
 function CategoryTable() {
+  const dispatch = useDispatch();
   const { catList } = useSelector((state) => state.catInfo);
+
+  useEffect(() => {
+    dispatch(getAllCats());
+  }, [dispatch]);
 
   return (
     <Table striped bordered hover>

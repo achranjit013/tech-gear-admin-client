@@ -18,6 +18,7 @@ import { UpdatePasswordForm } from "./components/admin-profile/UpdatePasswordFor
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllCats } from "./pages/category/categoryAction";
+import NewProduct from "./pages/product/NewProduct";
 
 function App() {
   const dispatch = useDispatch();
@@ -101,6 +102,18 @@ function App() {
               <MyProfile />
             </PrivateRoute>
           }
+        />
+        <Route
+          path="/product/new"
+          element={
+            <PrivateRoute>
+              <NewProduct />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={<h1 className="text-center">404 page not found</h1>}
         />
       </Routes>
 

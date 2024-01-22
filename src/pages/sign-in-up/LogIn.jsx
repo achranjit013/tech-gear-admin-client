@@ -5,13 +5,15 @@ import { postLoginUser } from "../../helpers/axiosHelper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { autoLogin, getUserProfile } from "../profile/userAction";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const emailRef = useRef("");
   const passRef = useRef("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  // const fromLocation = location.
 
   const { admin } = useSelector((state) => state.adminInfo);
 

@@ -19,10 +19,12 @@ export const autoLogin = () => async (dispatch) => {
     return dispatch(getUserProfile());
   }
 
-  const refreshJWT = sessionStorage.getItem("refreshjJWT");
+  const refreshJWT = localStorage.getItem("refreshJWT");
   console.log(refreshJWT);
+
   // get access jwt
   if (refreshJWT) {
+    console.log(refreshJWT);
     const token = await fetchNewAccessJWT();
 
     if (token?.accessJWT) {
@@ -31,5 +33,4 @@ export const autoLogin = () => async (dispatch) => {
       dispatch(getUserProfile());
     }
   }
-  // api call
 };

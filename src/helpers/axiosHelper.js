@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const rootAPI = import.meta.env.VITE_ROOT_API;
+const rootAPI = import.meta.env.VITE_SERVER_ROOT + "/api/v1";
 const userAPI = rootAPI + "/users";
 const catAPI = rootAPI + "/categories";
+const prodAPI = rootAPI + "/products";
 
 const getAccessJWT = () => {
   return sessionStorage.getItem("accessJWT");
@@ -21,6 +22,8 @@ const axiosProcessor = async ({
 }) => {
   try {
     const token = refreshToken ? getRefreshJWT() : getAccessJWT();
+    console.log("token is");
+    console.log(token);
 
     const headers = {
       Authorization: isPrivate ? token : null,
@@ -165,6 +168,27 @@ export const postCatgeory = (data) => {
   return axiosProcessor({
     method: "post",
     url: catAPI,
+    isPrivate: true,
+    data,
+  });
+};
+
+// get products
+export const fetchProducts = () => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "get",
+    url: prodAPI,
+    isPrivate: true,
+  });
+};
+
+// get products
+export const postProducts = (data) => {
+  console.log("i am in axios");
+  return axiosProcessor({
+    method: "post",
+    url: prodAPI,
     isPrivate: true,
     data,
   });

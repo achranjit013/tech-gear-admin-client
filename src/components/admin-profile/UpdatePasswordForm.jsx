@@ -65,10 +65,7 @@ export const UpdatePasswordForm = () => {
     e.preventDefault();
 
     // const email = emailRef.current.value;
-    console.log(form);
     const { confirmPassword, ...rest } = form;
-
-    console.log(rest);
 
     if (rest.newPassword !== confirmPassword) {
       return toast.error("Password do not match!");

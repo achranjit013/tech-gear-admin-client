@@ -3,6 +3,7 @@ import axios from "axios";
 const rootAPI = import.meta.env.VITE_SERVER_ROOT + "/api/v1";
 const userAPI = rootAPI + "/users";
 const catAPI = rootAPI + "/categories";
+const subCatAPI = rootAPI + "/sub-categories";
 const prodAPI = rootAPI + "/products";
 
 const getAccessJWT = () => {
@@ -22,8 +23,6 @@ const axiosProcessor = async ({
 }) => {
   try {
     const token = refreshToken ? getRefreshJWT() : getAccessJWT();
-    console.log("token is");
-    console.log(token);
 
     const headers = {
       Authorization: isPrivate ? token : null,
@@ -57,7 +56,6 @@ const axiosProcessor = async ({
 // user api
 // create new user (admin)
 export const postNewAdmin = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: userAPI,
@@ -67,7 +65,6 @@ export const postNewAdmin = (data) => {
 
 // verify email
 export const postVerifyEmail = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: userAPI + "/verify-email",
@@ -77,7 +74,6 @@ export const postVerifyEmail = (data) => {
 
 // log in
 export const postLoginUser = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: userAPI + "/login",
@@ -87,7 +83,6 @@ export const postLoginUser = (data) => {
 
 // fetching user
 export const fetchUser = () => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "get",
     url: userAPI,
@@ -97,7 +92,6 @@ export const fetchUser = () => {
 
 // fetch new access jwt
 export const fetchNewAccessJWT = () => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "get",
     url: userAPI + "/get-accessjwt",
@@ -108,7 +102,6 @@ export const fetchNewAccessJWT = () => {
 
 // logout
 export const logoutUser = (_id) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: userAPI + "/logout",
@@ -121,7 +114,6 @@ export const logoutUser = (_id) => {
 
 // request otp
 export const requestOTP = (email) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: userAPI + "/request-otp",
@@ -133,7 +125,6 @@ export const requestOTP = (email) => {
 
 // reset password
 export const updatePassword = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "patch",
     url: userAPI,
@@ -143,7 +134,6 @@ export const updatePassword = (data) => {
 
 // update password
 export const updateUserPassword = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "patch",
     url: userAPI + "/password-update",
@@ -154,7 +144,6 @@ export const updateUserPassword = (data) => {
 
 // get categories
 export const fetchCatgeories = () => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "get",
     url: catAPI,
@@ -164,7 +153,6 @@ export const fetchCatgeories = () => {
 
 // post categories
 export const postCatgeory = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: catAPI,
@@ -173,9 +161,47 @@ export const postCatgeory = (data) => {
   });
 };
 
+// post categories
+export const updateCatgeory = (data) => {
+  return axiosProcessor({
+    method: "put",
+    url: catAPI,
+    isPrivate: true,
+    data,
+  });
+};
+
+// post sub categories
+export const postSubCatgeory = (data) => {
+  return axiosProcessor({
+    method: "post",
+    url: subCatAPI,
+    isPrivate: true,
+    data,
+  });
+};
+
+// post sub categories
+export const updateSubCatgeory = (data) => {
+  return axiosProcessor({
+    method: "put",
+    url: subCatAPI,
+    isPrivate: true,
+    data,
+  });
+};
+
+// get sub categories
+export const fetchSubCatgeories = () => {
+  return axiosProcessor({
+    method: "get",
+    url: subCatAPI,
+    isPrivate: true,
+  });
+};
+
 // get products
 export const fetchProducts = (_id) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "get",
     url: _id ? prodAPI + "/" + _id : prodAPI,
@@ -183,9 +209,8 @@ export const fetchProducts = (_id) => {
   });
 };
 
-// get products
+// post products
 export const postProducts = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "post",
     url: prodAPI,
@@ -193,9 +218,8 @@ export const postProducts = (data) => {
     data,
   });
 };
-// get products
+// update products
 export const updateProduct = (data) => {
-  console.log("i am in axios");
   return axiosProcessor({
     method: "put",
     url: prodAPI,

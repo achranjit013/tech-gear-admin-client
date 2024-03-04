@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { getAllCats } from "./pages/category/categoryAction";
 import NewProduct from "./pages/product/NewProduct";
 import EditProduct from "./pages/product/EditProduct";
+import SubCategory from "./pages/category/SubCategory";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,16 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/sub-category"
+          element={
+            <PrivateRoute>
+              <SubCategory />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/product"
           element={
@@ -64,6 +75,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/payment-option"
           element={
@@ -72,6 +84,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/order"
           element={
@@ -80,6 +93,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/customer"
           element={
@@ -88,6 +102,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/admin-user"
           element={
@@ -96,6 +111,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/profile"
           element={
@@ -104,6 +120,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/product/new"
           element={
@@ -112,6 +129,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/product/edit/:_id"
           element={
@@ -120,6 +138,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="*"
           element={<h1 className="text-center">404 page not found</h1>}

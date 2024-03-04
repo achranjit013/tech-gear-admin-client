@@ -69,7 +69,6 @@ const ResetPassword = () => {
     });
 
     const resp = await pending;
-    console.log(resp);
     setResponse(resp);
     setForm({ email });
 
@@ -107,10 +106,7 @@ const ResetPassword = () => {
     e.preventDefault();
 
     // const email = emailRef.current.value;
-    console.log(form);
     const { confirmPassword, ...rest } = form;
-
-    console.log(rest);
 
     if (!rest.email || rest.password !== confirmPassword) {
       return toast.error("Password do not match or email is not provided!");

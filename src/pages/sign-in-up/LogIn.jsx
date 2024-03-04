@@ -13,12 +13,14 @@ const LogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  // const fromLocation = location.
+
+  const fromLocation =
+    location?.state?.from?.location?.pathname || "/dashboard";
 
   const { admin } = useSelector((state) => state.adminInfo);
 
   useEffect(() => {
-    admin?._id && navigate("/dashboard");
+    admin?._id && navigate(fromLocation);
     dispatch(autoLogin());
   }, [admin?._id, navigate, dispatch]);
 
@@ -47,8 +49,6 @@ const LogIn = () => {
     const email = emailRef.current.value;
     const password = passRef.current.value;
 
-    console.log(email + " and " + password);
-
     if (email && password) {
       const pending = postLoginUser({ email, password });
 
@@ -59,8 +59,6 @@ const LogIn = () => {
       const { status, message, jwts } = await pending;
 
       toast[status](message);
-
-      console.log(jwts);
 
       if (jwts?.accessJWT) {
         // store the token

@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  AiFillDashboard,
-  AiFillCreditCard,
-  AiFillProfile,
-} from "react-icons/ai";
-import { BiCategoryAlt } from "react-icons/bi";
+import { AiFillDashboard, AiFillProfile } from "react-icons/ai";
+import { TbCategory } from "react-icons/tb";
+import { TbCategory2 } from "react-icons/tb";
 import { PiVan } from "react-icons/pi";
-import { BsFillBoxFill } from "react-icons/bs";
+import { IoMdListBox } from "react-icons/io";
+import { MdPayment } from "react-icons/md";
 import { FaUsers, FaUserSecret } from "react-icons/fa";
 
 export const Sidebar = () => {
@@ -25,22 +23,27 @@ export const Sidebar = () => {
           </li>
           <li>
             <Link className="nav-link" to="/category">
-              <BiCategoryAlt className="fs-4" /> Category
+              <TbCategory className="fs-4" /> Category
+            </Link>
+          </li>
+          <li>
+            <Link className="nav-link" to="/sub-category">
+              <TbCategory2 className="fs-4" /> Sub Category
             </Link>
           </li>
           <li>
             <Link className="nav-link" to="/product">
-              <BsFillBoxFill className="fs-4" /> Product
+              <IoMdListBox className="fs-4" /> Product
             </Link>
           </li>
           <li>
             <Link className="nav-link" to="/payment-option">
-              <AiFillCreditCard className="fs-4" /> Payment Option
+              <MdPayment className="fs-4" /> Payment Option
             </Link>
           </li>
           <li>
             <Link className="nav-link" to="/order">
-              <PiVan className="fs-4" /> Oreder
+              <PiVan className="fs-4" /> Order
             </Link>
           </li>
           <li>

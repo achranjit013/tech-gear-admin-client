@@ -15,28 +15,44 @@ const Category = () => {
 
     if (window.confirm("are you sure to add?")) {
       const title = titleRef.current.value;
+
       if (!title) {
         return toast.error("please provide title");
       }
 
-      //
+      //dispatch to post in database table and update redux store
       dispatch(postNewCat({ title }));
     }
   };
+
   return (
     <AdminLayout title="Category">
-      <div>
+      <div className="mb-5 p-3 border shadow rounded">
         <Form onSubmit={handleOnSubmit}>
-          <Row className="m-4 g-2">
-            <Col md={8}>
+          <Row>
+            <h4>Add New Category</h4>
+            <hr />
+          </Row>
+          <Row className="">
+            <Col md={12}>
+              <Form.Label className="fw-medium">Category</Form.Label>
               <Form.Control
                 ref={titleRef}
                 required={true}
-                placeholder="enter new category"
+                placeholder="Enter new category"
               />
             </Col>
-            <Col md={4}>
-              <Button type="submit">Add new category</Button>
+          </Row>
+
+          <Row>
+            <Col md={12}>
+              <Button
+                type="submit"
+                className="mt-3 px-5 fw-bold lh-base"
+                style={{ letterSpacing: "1px" }}
+              >
+                Add
+              </Button>
             </Col>
           </Row>
         </Form>

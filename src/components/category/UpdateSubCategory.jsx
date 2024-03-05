@@ -17,7 +17,13 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
   useEffect(() => {
     dispatch(getAllCats());
 
-    if (categoryId && _id) {
+    if (
+      categoryId &&
+      _id &&
+      titleRef.current &&
+      catRef.current &&
+      statusRef.current
+    ) {
       // Set initial values of the useRef references
       titleRef.current.value = title;
       catRef.current.value = categoryId;
@@ -61,19 +67,28 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
 
             <div className="mt-3">
               <Form.Label className="fw-medium">Category</Form.Label>
-              <Form.Select ref={catRef} required>
+              {/* <Form.Select ref={catRef} required>
                 <option value="">-- select relevant category --</option>
                 {filteredCatList.map((cat) => (
                   <option key={cat?._id} value={cat?._id}>
                     {cat.title}
                   </option>
                 ))}
-              </Form.Select>
+              </Form.Select> */}
+
+              <Form.Control as="select" name="categoryId" ref={catRef}>
+                <option value="">-- select relevant category --</option>
+                {filteredCatList.map((cat) => (
+                  <option key={cat._id} value={cat?._id}>
+                    {cat.title}
+                  </option>
+                ))}
+              </Form.Control>
             </div>
 
             <div className="mt-3">
               <Form.Label className="fw-medium">Status</Form.Label>
-              <Form.Select ref={statusRef} required>
+              {/* <Form.Select ref={statusRef} required>
                 <option value="">-- select status --</option>
                 <option key="active" value="active">
                   active
@@ -81,7 +96,12 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
                 <option key="inactive" value="inactive">
                   inactive
                 </option>
-              </Form.Select>
+              </Form.Select> */}
+              <Form.Control as="select" name="status" ref={statusRef} required>
+                <option value="active">-- select status --</option>
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+              </Form.Control>
             </div>
           </Col>
 

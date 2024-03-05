@@ -3,13 +3,17 @@ import { AdminLayout } from "../../components/layout/AdminLayout";
 import { Button, Form, Table } from "react-bootstrap";
 import CustomInput from "../../components/custom-input/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCats } from "../category/categoryAction";
+import { getAllSubCats } from "../category/categoryAction";
 import { postAProduct } from "./productAction";
 import { Link } from "react-router-dom";
+import { FaBackward } from "react-icons/fa";
+import { MdOutlineDeleteForever } from "react-icons/md";
 
+// initial form state
 const initialState = {
   name: "",
-  parentCatId: "",
+  categoryId: "",
+  subCategoryId: "",
   sku: "",
   basePrice: "",
   description: "",
@@ -27,14 +31,25 @@ const initialRowState = {
 
 const NewProduct = () => {
   const dispatch = useDispatch();
-  const { catList } = useSelector((state) => state.catInfo);
+  const { subCatList } = useSelector((state) => state.catInfo);
   const [form, setForm] = useState(initialState);
   const [imgs, setImgs] = useState([]);
   const [rows, setRows] = useState([initialRowState]);
+  const [filteredSubCatList, setFilteredSubCatList] = useState([]);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   useEffect(() => {
-    dispatch(getAllCats());
-  }, [dispatch]);
+    dispatch(getAllSubCats());
+
+    if (subCatList.length > 0) {
+      const activeSubCategories = subCatList.flatMap((obj) =>
+        obj.subCategories
+          .filter((subCategory) => subCategory.status === "active")
+          .map((subCategory) => ({ ...subCategory, categoryId: obj._id }))
+      );
+      setFilteredSubCatList(activeSubCategories);
+    }
+  }, [dispatch, subCatList.length]);
 
   const inputs = [
     {
@@ -78,39 +93,39 @@ const NewProduct = () => {
       name: "size",
       type: "text",
       required: true,
-      value: rows.size,
     },
     {
       name: "qty",
       type: "number",
       required: true,
-      value: rows.qty,
     },
     {
       name: "price",
       type: "number",
-      value: rows.price,
     },
     {
       name: "salesPrice",
       type: "number",
-      value: rows.salesPrice,
     },
     {
       name: "salesStartDate",
       type: "date",
-      value: rows.salesStartDate,
     },
     {
       name: "salesEndDate",
       type: "date",
-      value: rows.salesEndDate,
     },
   ];
 
   // for form input fields
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "subCategoryId") {
+      form.categoryId = filteredSubCatList.filter(
+        (item) => item._id === value
+      )[0].categoryId;
+    }
 
     setForm({
       ...form,
@@ -130,10 +145,6 @@ const NewProduct = () => {
   // for adding new row in the table
   const handleRowAdd = () => {
     const currentRow = rows[rows.length - 1];
-
-    // if (!currentRow.price) currentRow.price = form.basePrice;
-
-    // currentRow.price = currentRow.price ? currentRow.price : form.basePrice;
 
     if (currentRow.size !== "" && currentRow.qty !== "") {
       setRows([...rows, initialRowState]);
@@ -159,8 +170,10 @@ const NewProduct = () => {
   };
 
   // form submission
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    setBtnDisabled(true);
 
     // combine data file
     const formDt = new FormData();
@@ -185,33 +198,52 @@ const NewProduct = () => {
       });
     }
 
-    dispatch(postAProduct(formDt));
+    const { status } = await dispatch(postAProduct(formDt));
 
-    // setForm(initialState);
+    if (status === "success") {
+      // after successfully adding a product, clear the form inputs, variants field and image attachments
+
+      setForm(initialState);
+
+      setRows([initialRowState]);
+
+      // Clear the selected images
+      setImgs([]);
+
+      // Reset the file input field
+      const fileInput = document.getElementById("imageInput");
+      if (fileInput) {
+        fileInput.value = null;
+      }
+    }
+
+    setBtnDisabled(false);
   };
 
   return (
     <AdminLayout title="Product">
       <Link to="/product">
-        <Button variant="secondary">&lt;&lt; Back</Button>
+        <Button variant="secondary" className="px-4">
+          <FaBackward className="fs-3" />
+        </Button>
       </Link>
 
       <Form className="rounded shadow-lg p-3 mt-3" onSubmit={handleOnSubmit}>
-        <h2>Add new product below!</h2>
+        <h2>Add new product below</h2>
         <hr />
 
         <Form.Group className="mb-3">
-          <Form.Label>Category</Form.Label>
+          <Form.Label>Subcategory</Form.Label>
           <Form.Select
-            name="parentCatId"
+            name="subCategoryId"
             onChange={handleOnChange}
-            value={form.parentCatId}
+            value={form.subCategoryId}
             required
           >
             <option value="">-- select one --</option>
-            {catList.map((cat) => (
-              <option key={cat?._id} value={cat?._id}>
-                {cat.title}
+            {filteredSubCatList.map(({ _id: subCategoryId, title }) => (
+              <option key={subCategoryId} value={subCategoryId}>
+                {title}
               </option>
             ))}
           </Form.Select>
@@ -236,25 +268,26 @@ const NewProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
+            {rows?.map((row, index) => (
               <tr key={index} className="">
                 {tableInputs.map((item, i) => (
                   <td key={i}>
                     <CustomInput
                       {...item}
+                      value={row[item.name]}
                       onChange={() => handleRowChange(event, index, item.name)}
                     />
                   </td>
                 ))}
 
                 <td>
-                  <Form.Group className="mt-3">
+                  <Form.Group className="">
                     <Button
-                      className=""
+                      className="mt-4 px-2 py-1"
                       variant="danger"
                       onClick={() => handleRowDelete(index)}
                     >
-                      Delete
+                      <MdOutlineDeleteForever className="fs-4" />
                     </Button>
                   </Form.Group>
                 </td>
@@ -263,8 +296,12 @@ const NewProduct = () => {
           </tbody>
           <tfoot>
             <tr>
-              <td>
-                <Button variant="secondary" onClick={handleRowAdd}>
+              <td colSpan={7}>
+                <Button
+                  variant="secondary"
+                  disabled={btnDisabled}
+                  onClick={handleRowAdd}
+                >
                   Add new row
                 </Button>
               </td>
@@ -276,6 +313,7 @@ const NewProduct = () => {
         {/* handling the attachmnets */}
         <Form.Group className="mb-3">
           <Form.Control
+            id="imageInput"
             type="file"
             name="img"
             multiple
@@ -285,8 +323,8 @@ const NewProduct = () => {
         </Form.Group>
 
         <div className="d-grid">
-          <Button variant="primary" type="submit">
-            Add new product
+          <Button variant="primary" type="submit" disabled={btnDisabled}>
+            {btnDisabled ? "Processing..." : "Add new product"}
           </Button>
         </div>
       </Form>

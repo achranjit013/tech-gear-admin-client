@@ -49,8 +49,10 @@ export const updateExistingCat = (obj) => async (dispatch) => {
   }
 };
 
-export const getAllSubCats = () => async (dispatch) => {
-  const { status, message, subCategories } = await fetchSubCatgeories();
+export const getAllSubCats = (categoryId) => async (dispatch) => {
+  const { status, message, subCategories } = await fetchSubCatgeories(
+    categoryId
+  );
 
   if (status === "success") {
     dispatch(setSubCatList(subCategories));

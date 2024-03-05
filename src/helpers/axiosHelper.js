@@ -192,10 +192,10 @@ export const updateSubCatgeory = (data) => {
 };
 
 // get sub categories
-export const fetchSubCatgeories = () => {
+export const fetchSubCatgeories = (categoryId) => {
   return axiosProcessor({
     method: "get",
-    url: subCatAPI,
+    url: categoryId ? subCatAPI + "/" + categoryId : subCatAPI,
     isPrivate: true,
   });
 };
@@ -218,6 +218,7 @@ export const postProducts = (data) => {
     data,
   });
 };
+
 // update products
 export const updateProduct = (data) => {
   return axiosProcessor({
@@ -225,5 +226,14 @@ export const updateProduct = (data) => {
     url: prodAPI,
     isPrivate: true,
     data,
+  });
+};
+
+// update products
+export const deleteProduct = (_id) => {
+  return axiosProcessor({
+    method: "delete",
+    url: prodAPI + "/" + _id,
+    isPrivate: true,
   });
 };

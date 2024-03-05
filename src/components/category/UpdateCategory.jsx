@@ -2,23 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import {
-  getAllCats,
+  getAllSubCats,
   updateExistingCat,
-  updateExistingSubCat,
 } from "../../pages/category/categoryAction";
+import { toast } from "react-toastify";
 
 const UpdateCategory = ({ _id, title, status }) => {
+  const dispatch = useDispatch();
+  const { subCatList } = useSelector((state) => state.catInfo);
   const titleRef = useRef(null);
   const statusRef = useRef(null);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getAllCats());
-
     if (_id) {
       // Set initial values of the useRef references
       titleRef.current.value = title;
       statusRef.current.value = status;
+
+      dispatch(getAllSubCats(_id));
     }
   }, [_id, title, status]);
 
@@ -30,6 +31,13 @@ const UpdateCategory = ({ _id, title, status }) => {
       const status = statusRef.current.value;
       if (!title) return toast.error("please provide title");
       if (!status) return toast.error("please provide status");
+
+      if (status === "inactive" && subCatList.length > 0) {
+        toast["error"](
+          "Sorry, unable to update the category as it has an association with an active subcategory."
+        );
+        return;
+      }
 
       //dispatch to update in database table and update redux store
       dispatch(updateExistingCat({ _id, title, status }));

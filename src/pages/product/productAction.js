@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import {
+  deleteProduct,
   fetchProducts,
   postProducts,
   updateProduct,
@@ -35,6 +36,8 @@ export const postAProduct = (obj) => async (dispatch) => {
   if (status === "success") {
     dispatch(getAllProducts());
   }
+
+  return { status };
 };
 
 export const updateAProduct = (_id, obj) => async (dispatch) => {
@@ -50,4 +53,19 @@ export const updateAProduct = (_id, obj) => async (dispatch) => {
   if (status === "success") {
     dispatch(getAProduct(_id));
   }
+
+  return { status };
+};
+
+export const deleteAProduct = (_id) => async (dispatch) => {
+  const pending = deleteProduct(_id);
+
+  toast.promise(pending, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await pending;
+  toast[status](message);
+
+  return { status };
 };

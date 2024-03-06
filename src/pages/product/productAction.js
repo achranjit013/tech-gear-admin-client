@@ -7,8 +7,8 @@ import {
 } from "../../helpers/axiosHelper";
 import { setProductList, setSelectedProduct } from "./productSlice";
 
-export const getAllProducts = () => async (dispatch) => {
-  const { status, message, products } = await fetchProducts();
+export const getAllProducts = (subcategoryId) => async (dispatch) => {
+  const { status, message, products } = await fetchProducts(subcategoryId);
 
   if (status === "success") {
     dispatch(setProductList(products));

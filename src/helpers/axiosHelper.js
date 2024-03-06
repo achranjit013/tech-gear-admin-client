@@ -171,6 +171,15 @@ export const updateCatgeory = (data) => {
   });
 };
 
+// delete category
+export const deleteCategory = (_id) => {
+  return axiosProcessor({
+    method: "delete",
+    url: catAPI + "/" + _id,
+    isPrivate: true,
+  });
+};
+
 // post sub categories
 export const postSubCatgeory = (data) => {
   return axiosProcessor({
@@ -196,6 +205,15 @@ export const fetchSubCatgeories = (categoryId) => {
   return axiosProcessor({
     method: "get",
     url: categoryId ? subCatAPI + "/" + categoryId : subCatAPI,
+    isPrivate: true,
+  });
+};
+
+// delete subcategory
+export const deleteSubCategory = (_id) => {
+  return axiosProcessor({
+    method: "delete",
+    url: subCatAPI + "/" + _id,
     isPrivate: true,
   });
 };

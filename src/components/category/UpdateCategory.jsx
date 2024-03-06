@@ -26,7 +26,7 @@ const UpdateCategory = ({ _id, title, status }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (window.confirm("Are you sure to update the category?")) {
+    if (window.confirm(`Are you sure to update ${title}?`)) {
       const title = titleRef.current.value;
       const status = statusRef.current.value;
       if (!title) return toast.error("please provide title");

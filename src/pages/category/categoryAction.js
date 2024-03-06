@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import {
+  deleteCategory,
+  deleteSubCategory,
   fetchCatgeories,
   fetchSubCatgeories,
   postCatgeory,
@@ -49,6 +51,21 @@ export const updateExistingCat = (obj) => async (dispatch) => {
   }
 };
 
+export const deleteExistingCat = (_id) => async (dispatch) => {
+  const pending = deleteCategory(_id);
+  toast.promise(pending, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await pending;
+
+  toast[status](message);
+
+  if (status === "success") {
+    dispatch(getAllCats());
+  }
+};
+
 export const getAllSubCats = (categoryId) => async (dispatch) => {
   const { status, message, subCategories } = await fetchSubCatgeories(
     categoryId
@@ -87,5 +104,20 @@ export const updateExistingSubCat = (obj) => async (dispatch) => {
   if (status === "success") {
     dispatch(getAllSubCats());
     dispatch(setShowModal(false));
+  }
+};
+
+export const deleteExistingSubCat = (_id) => async (dispatch) => {
+  const pending = deleteSubCategory(_id);
+  toast.promise(pending, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await pending;
+
+  toast[status](message);
+
+  if (status === "success") {
+    dispatch(getAllSubCats());
   }
 };

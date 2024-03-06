@@ -5,6 +5,8 @@ import {
   getAllCats,
   updateExistingSubCat,
 } from "../../pages/category/categoryAction";
+import { toast } from "react-toastify";
+import { getAllProducts } from "../../pages/product/productAction";
 
 const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
   const titleRef = useRef(null);
@@ -12,6 +14,7 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
   const statusRef = useRef(null);
   const dispatch = useDispatch();
   const { catList } = useSelector((state) => state.catInfo);
+  const { productList } = useSelector((state) => state.productInfo);
   const [filteredCatList, setFilteredCatList] = useState([]);
 
   useEffect(() => {
@@ -28,6 +31,8 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
       titleRef.current.value = title;
       catRef.current.value = categoryId;
       statusRef.current.value = status;
+
+      dispatch(getAllProducts("subcategoryId" + _id));
     }
 
     if (catList.length > 0) {
@@ -46,6 +51,13 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
       if (!categoryId) return toast.error("please provide category");
       if (!status) return toast.error("please provide status");
 
+      if (status === "inactive" && productList.length > 0) {
+        toast["error"](
+          "Sorry, unable to update the subcategory as it has an association with an active product."
+        );
+        return;
+      }
+
       //dispatch to update in database table and update redux store
       dispatch(updateExistingSubCat({ _id, title, categoryId, status }));
     }
@@ -57,7 +69,7 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
         <Row className="g-2">
           <Col md={12}>
             <div>
-              <Form.Label className="fw-medium">Sub Category</Form.Label>
+              <Form.Label className="fw-medium">Subcategory</Form.Label>
               <Form.Control
                 ref={titleRef}
                 required={true}
@@ -67,16 +79,7 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
 
             <div className="mt-3">
               <Form.Label className="fw-medium">Category</Form.Label>
-              {/* <Form.Select ref={catRef} required>
-                <option value="">-- select relevant category --</option>
-                {filteredCatList.map((cat) => (
-                  <option key={cat?._id} value={cat?._id}>
-                    {cat.title}
-                  </option>
-                ))}
-              </Form.Select> */}
-
-              <Form.Control as="select" name="categoryId" ref={catRef}>
+              <Form.Control as="select" name="categoryId" ref={catRef} required>
                 <option value="">-- select relevant category --</option>
                 {filteredCatList.map((cat) => (
                   <option key={cat._id} value={cat?._id}>
@@ -88,17 +91,8 @@ const UpdateSubCategory = ({ categoryId, _id, title, status }) => {
 
             <div className="mt-3">
               <Form.Label className="fw-medium">Status</Form.Label>
-              {/* <Form.Select ref={statusRef} required>
-                <option value="">-- select status --</option>
-                <option key="active" value="active">
-                  active
-                </option>
-                <option key="inactive" value="inactive">
-                  inactive
-                </option>
-              </Form.Select> */}
               <Form.Control as="select" name="status" ref={statusRef} required>
-                <option value="active">-- select status --</option>
+                <option value="">-- select status --</option>
                 <option value="active">active</option>
                 <option value="inactive">inactive</option>
               </Form.Control>

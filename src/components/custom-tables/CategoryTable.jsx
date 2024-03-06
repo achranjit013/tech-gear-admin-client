@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCats } from "../../pages/category/categoryAction";
+import {
+  deleteExistingCat,
+  getAllCats,
+} from "../../pages/category/categoryAction";
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import CustomModal from "../custom-modal/CustomModal";
 import { setShowModal } from "../custom-modal/modalSlice";
 import UpdateCategory from "../category/UpdateCategory";
@@ -24,6 +28,12 @@ function CategoryTable() {
   const handleOnEditBtn = (catObj) => {
     setUpdateCategory(catObj);
     dispatch(setShowModal(true));
+  };
+
+  const handleOnCategoryDelete = ({ _id, title }) => {
+    if (window.confirm(`Are you sure to delete ${title}?`)) {
+      return dispatch(deleteExistingCat(_id));
+    }
   };
 
   return (
@@ -64,13 +74,25 @@ function CategoryTable() {
               <td>{slug}</td>
               <td>{createdAt?.slice(0, 10)}</td>
               <td>
-                <Button
-                  variant="warning"
-                  onClick={() => handleOnEditBtn({ _id, title, status })}
-                  className="p-2 d-flex justify-content-center align-items-center"
-                >
-                  <FaEdit />
-                </Button>
+                <div className="d-flex align-items-center gap-2">
+                  <Button
+                    variant="warning"
+                    onClick={() => handleOnEditBtn({ _id, title, status })}
+                    className="p-2 d-flex justify-content-center align-items-center"
+                  >
+                    <FaEdit />
+                  </Button>
+
+                  {status === "inactive" && (
+                    <Button
+                      variant="danger"
+                      className="p-2 d-flex justify-content-center align-items-center"
+                      onClick={() => handleOnCategoryDelete({ _id, title })}
+                    >
+                      <MdDelete />
+                    </Button>
+                  )}
+                </div>
               </td>
             </tr>
           ))}

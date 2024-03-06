@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCats, getAllSubCats } from "../../pages/category/categoryAction";
+import {
+  deleteExistingSubCat,
+  getAllCats,
+  getAllSubCats,
+} from "../../pages/category/categoryAction";
 import { format } from "date-fns";
 import CustomModal from "../custom-modal/CustomModal";
 import { setShowModal } from "../custom-modal/modalSlice";
 import UpdateSubCategory from "../category/UpdateSubCategory";
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -51,9 +56,15 @@ function SubCategoryTable() {
     dispatch(setShowModal(true));
   };
 
+  const handleOnSubCategoryDelete = () => {
+    if (window.confirm(`Are you sure to delete ${selectedTitle}?`)) {
+      return dispatch(deleteExistingSubCat(selectedSubcategory));
+    }
+  };
+
   return subCatList.length > 0 ? (
     <>
-      <CustomModal title="Sub category update form!">
+      <CustomModal title="Subcategory update form!">
         <UpdateSubCategory {...updateSubcategory} />
       </CustomModal>
 
@@ -63,7 +74,12 @@ function SubCategoryTable() {
       <Table striped bordered className="overflow-hidden rounded shadow">
         <thead>
           <tr>
-            <th>Category</th>
+            <th rowSpan={2}>Category</th>
+            <th colSpan={4} className="text-center">
+              Subcategory
+            </th>
+          </tr>
+          <tr>
             <th>Title (Slug)</th>
             <th>Status</th>
             <th>Created At</th>
@@ -110,14 +126,28 @@ function SubCategoryTable() {
                     <td>{format(new Date(createdAt), "dd/MM/yyyy")}</td>
                     {subIndex === 0 && (
                       <td rowSpan={subCategories.length}>
-                        <Button
-                          variant="warning"
-                          disabled={selectedCategory !== catId}
-                          onClick={handleOnEditBtn}
-                          className="p-2 d-flex justify-content-center align-items-center"
-                        >
-                          <FaEdit />
-                        </Button>
+                        <div className="d-flex align-items-center gap-2">
+                          <Button
+                            variant="warning"
+                            disabled={selectedCategory !== catId}
+                            onClick={handleOnEditBtn}
+                            className="p-2 d-flex justify-content-center align-items-center"
+                          >
+                            <FaEdit />
+                          </Button>
+
+                          {status === "inactive" &&
+                            selectedSubcategory === _id && (
+                              <Button
+                                variant="danger"
+                                className="p-2 d-flex justify-content-center align-items-center"
+                                disabled={selectedCategory !== catId}
+                                onClick={handleOnSubCategoryDelete}
+                              >
+                                <MdDelete />
+                              </Button>
+                            )}
+                        </div>
                       </td>
                     )}
                   </tr>

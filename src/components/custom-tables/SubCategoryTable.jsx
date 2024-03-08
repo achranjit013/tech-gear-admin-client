@@ -75,15 +75,15 @@ function SubCategoryTable() {
         <thead>
           <tr>
             <th rowSpan={2}>Category</th>
-            <th colSpan={4} className="text-center">
+            <th colSpan={3} className="text-center">
               Subcategory
             </th>
+            <th rowSpan={2}>Action</th>
           </tr>
           <tr>
             <th>Title (Slug)</th>
             <th>Status</th>
             <th>Created At</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>

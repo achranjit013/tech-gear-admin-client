@@ -5,6 +5,7 @@ const userAPI = rootAPI + "/users";
 const catAPI = rootAPI + "/categories";
 const subCatAPI = rootAPI + "/sub-categories";
 const prodAPI = rootAPI + "/products";
+const orderAPI = rootAPI + "/orders";
 
 const getAccessJWT = () => {
   return sessionStorage.getItem("accessJWT");
@@ -253,5 +254,24 @@ export const deleteProduct = (_id) => {
     method: "delete",
     url: prodAPI + "/" + _id,
     isPrivate: true,
+  });
+};
+
+// get orders
+export const fetchOrders = (_id) => {
+  return axiosProcessor({
+    method: "get",
+    url: _id ? orderAPI + "/" + _id : orderAPI,
+    isPrivate: true,
+  });
+};
+
+// update order status
+export const updateOrder = (data) => {
+  return axiosProcessor({
+    method: "patch",
+    url: orderAPI,
+    isPrivate: true,
+    data,
   });
 };

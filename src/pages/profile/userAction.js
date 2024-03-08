@@ -1,11 +1,15 @@
 import { fetchNewAccessJWT, fetchUser } from "../../helpers/axiosHelper";
-import { setAdmin } from "./userSlice";
+import { setAdmin, setCustomers } from "./userSlice";
 
 export const getUserProfile = () => async (dispatch) => {
   const resp = await fetchUser();
 
   if (resp?.user) {
     dispatch(setAdmin(resp.user));
+  }
+
+  if (resp?.findResult) {
+    dispatch(setCustomers(resp.findResult));
   }
 };
 

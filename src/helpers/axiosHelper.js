@@ -83,10 +83,10 @@ export const postLoginUser = (data) => {
 };
 
 // fetching user
-export const fetchUser = () => {
+export const fetchUser = (role) => {
   return axiosProcessor({
     method: "get",
-    url: userAPI,
+    url: role ? userAPI + "/" + role : userAPI,
     isPrivate: true,
   });
 };

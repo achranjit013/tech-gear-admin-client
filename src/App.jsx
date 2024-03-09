@@ -39,7 +39,14 @@ function App() {
         <Route path="/password-update" element={<UpdatePasswordForm />} />
 
         {/* private route */}
-        <Route path="/admin-signup" element={<SignUp />} />
+        <Route
+          path="/admin-signup"
+          element={
+            <PrivateRoute>
+              <SignUp />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={

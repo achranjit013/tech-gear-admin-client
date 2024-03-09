@@ -3,9 +3,23 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import CustomInput from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
 import { postNewAdmin } from "../../helpers/axiosHelper";
+import { AdminLayout } from "../../components/layout/AdminLayout";
+import { useDispatch } from "react-redux";
+import { getUserProfile } from "../profile/userAction";
+
+const initialState = {
+  fname: "",
+  lname: "",
+  address: "",
+  phone: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const SignUp = () => {
-  const [form, setForm] = useState({});
+  const dispatch = useDispatch();
+  const [form, setForm] = useState(initialState);
   const [passwordValidationError, setPasswordValidationError] = useState("");
 
   const inputs = [
@@ -15,6 +29,7 @@ const SignUp = () => {
       placeholder: "Enter first name",
       type: "text",
       required: true,
+      value: form.fname,
     },
     {
       label: "Last name",
@@ -22,6 +37,7 @@ const SignUp = () => {
       placeholder: "Enter last name",
       type: "text",
       required: true,
+      value: form.lname,
     },
     {
       label: "Address",
@@ -29,12 +45,14 @@ const SignUp = () => {
       placeholder: "Enter home address",
       type: "text",
       required: true,
+      value: form.address,
     },
     {
       label: "Phone No",
       name: "phone",
       placeholder: "Enter phone number",
       type: "number",
+      value: form.phone,
     },
     {
       label: "Email",
@@ -42,6 +60,7 @@ const SignUp = () => {
       placeholder: "Enter email",
       type: "email",
       required: true,
+      value: form.email,
     },
     {
       label: "Password",
@@ -49,6 +68,7 @@ const SignUp = () => {
       placeholder: "Enter password",
       type: "password",
       required: true,
+      value: form.password,
     },
     {
       label: "Confirm password",
@@ -56,6 +76,7 @@ const SignUp = () => {
       placeholder: "Re-enter password",
       type: "password",
       required: true,
+      value: form.confirmPassword,
     },
   ];
 
@@ -104,58 +125,49 @@ const SignUp = () => {
 
     toast.promise(adminPromise, {
       pending: "Please wait...",
-      // success:
-      //   "We have sent you an email with instruction to verify your email. Please check your inbox or spam folder!",
-      // error:
-      //   "Error! Unable to process your request. Please try again or contact admin!",
     });
 
     const { status, message } = await adminPromise;
+
+    if (status === "success") {
+      setForm(initialState);
+    }
 
     toast[status](message);
   };
 
   return (
-    <Container fluid>
-      <Row className="d-flex justify-content-center align-items-center gap-3 vh-100">
-        <Col md={true}>
-          <p className="rounded shadow-lg p-3 text-center fw-bold">
-            Welcome to Tech Gear Admin CMS!
-            <br />
-            Empowering you to seamlessly organize, access, and explore a world
-            of e-commerce!
-          </p>
-        </Col>
-        <Col md={true}>
-          <Form className="rounded shadow-lg p-3" onSubmit={handleOnSubmit}>
-            <h2>Create new admin!</h2>
-            <hr />
+    <AdminLayout title="Create New Admin">
+      <Container fluid>
+        <Row className="">
+          <Col md={true}>
+            <Form className="rounded shadow-lg p-3" onSubmit={handleOnSubmit}>
+              {inputs.map((item, i) => (
+                <CustomInput key={i} {...item} onChange={handleOnChange} />
+              ))}
 
-            {inputs.map((item, i) => (
-              <CustomInput key={i} {...item} onChange={handleOnChange} />
-            ))}
+              <div className="">
+                {passwordValidationError && (
+                  <div className="text-danger fw-bold p-3">
+                    {passwordValidationError}
+                  </div>
+                )}
+              </div>
 
-            <div className="">
-              {passwordValidationError && (
-                <div className="text-danger fw-bold p-3">
-                  {passwordValidationError}
-                </div>
-              )}
-            </div>
-
-            <div className="d-grid">
-              <Button
-                variant="primary"
-                type="submit"
-                disabled={passwordValidationError}
-              >
-                Create new admin
-              </Button>
-            </div>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+              <div className="d-grid">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={passwordValidationError}
+                >
+                  Create new admin
+                </Button>
+              </div>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </AdminLayout>
   );
 };
 

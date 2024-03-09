@@ -18,32 +18,33 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function CustomerTable() {
-  const { customers } = useSelector((state) => state.adminInfo);
-  const [fileteredCustomers, setFilteredCustomers] = useState(customers);
+function CustomerTable({ users }) {
+  const [fileteredCustomers, setFilteredCustomers] = useState(users);
 
   const handleOnSearch = (e) => {
-    const filteredResult = customers.filter(
-      (customer) =>
-        customer.fname.includes(e.target.value) ||
-        customer.lname.includes(e.target.value)
+    const filteredResult = users.filter(
+      (user) =>
+        user.fname.includes(e.target.value) ||
+        user.lname.includes(e.target.value)
     );
     setFilteredCustomers(filteredResult);
   };
 
   const obj = {
     name: "search",
-    placeholder: "Search by customer",
+    placeholder: "Search by first and last name",
     type: "text",
   };
 
   return (
     <>
       <Row className="d-flex justify-content-between align-items-end">
-        <Col md={4} className="mb-md-3">
-          <span className="fw-medium">{customers.length} customers found!</span>
+        <Col md={6} className="mb-md-3">
+          <span className="fw-medium">
+            {users?.length} {users?.length > 1 ? "users" : "user"} found!
+          </span>
         </Col>
-        <Col md={8}>
+        <Col md={6}>
           <CustomInput {...obj} onChange={handleOnSearch} />
         </Col>
       </Row>

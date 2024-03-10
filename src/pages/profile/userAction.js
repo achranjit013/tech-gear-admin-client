@@ -1,4 +1,12 @@
-import { fetchNewAccessJWT, fetchUser } from "../../helpers/axiosHelper";
+import { toast } from "react-toastify";
+import { setShowModal } from "../../components/custom-modal/modalSlice";
+import {
+  fetchNewAccessJWT,
+  fetchUser,
+  logoutUser,
+  updateAdminEmail,
+  updateAdminProfile,
+} from "../../helpers/axiosHelper";
 import { setAdmin, setAdminList, setCustomers } from "./userSlice";
 
 export const getUserProfile = () => async (dispatch) => {
@@ -36,4 +44,51 @@ export const autoLogin = () => async (dispatch) => {
       dispatch(getUserProfile());
     }
   }
+};
+
+export const updateAdminProfileAction = (data) => async (dispatch) => {
+  const adminPromise = updateAdminProfile(data);
+
+  toast.promise(adminPromise, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await adminPromise;
+
+  if (status === "success") {
+    // hide modal
+    dispatch(setShowModal(false));
+
+    // fetch updated admin data
+    dispatch(getUserProfile());
+  }
+
+  toast[status](message);
+};
+
+export const updateAdminEmailAction = (data) => async (dispatch) => {
+  const { _id, ...rest } = data;
+
+  const adminPromise = updateAdminEmail(rest);
+
+  toast.promise(adminPromise, {
+    pending: "Please wait...",
+  });
+
+  const { status, message } = await adminPromise;
+
+  if (status === "success") {
+    logoutUser(_id);
+
+    //clear storages
+    localStorage.removeItem("refreshJWT");
+    sessionStorage.removeItem("accessJWT");
+
+    // reset store
+    dispatch(setAdmin({}));
+    navigate("/");
+  }
+
+  dispatch(setShowModal(false));
+  toast[status](message);
 };

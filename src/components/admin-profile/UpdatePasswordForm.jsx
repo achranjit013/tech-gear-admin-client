@@ -1,13 +1,23 @@
 import React, { useState } from "react";
-import { Alert, Button, Form } from "react-bootstrap";
+import { Alert, Button, Form, ListGroup } from "react-bootstrap";
 import CustomInput from "../custom-input/CustomInput";
 import { updateUserPassword } from "../../helpers/axiosHelper";
 import { toast } from "react-toastify";
 
 export const UpdatePasswordForm = () => {
-  const [response, setResponse] = useState("");
   const [form, setForm] = useState({});
-  const [passwordValidationError, setPasswordValidationError] = useState("");
+  const [passwordValidationError, setPasswordValidationError] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+  // array of password validation error messages
+  const validationMessage = [
+    "Password must be between 6 to 16 characters and include at least:",
+    "1. one uppercase",
+    "2. one lowercase",
+    "3. one number",
+    "4. one special character",
+    "5. and no spaces",
+  ];
 
   // update password inputs
   const inputs = [
@@ -17,6 +27,7 @@ export const UpdatePasswordForm = () => {
       placeholder: "Enter current password",
       type: "password",
       required: true,
+      value: form.oldPassword,
     },
     {
       label: "New password",
@@ -24,6 +35,7 @@ export const UpdatePasswordForm = () => {
       placeholder: "Enter new password",
       type: "password",
       required: true,
+      value: form.newPassword,
     },
     {
       label: "Confirm new password",
@@ -31,28 +43,33 @@ export const UpdatePasswordForm = () => {
       placeholder: "Re-enter new password",
       type: "password",
       required: true,
+      value: form.confirmPassword,
     },
   ];
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
-    // check if password is valid
-    setPasswordValidationError("");
-    if (name === "password") {
+    form.newPassword = name === "newPassword" ? value : form.newPassword;
+    form.confirmPassword =
+      name === "confirmPassword" ? value : form.confirmPassword;
+
+    // check new password
+    if (form.newPassword) {
       const regularExpression =
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      const isPasswordValid = regularExpression.test(form.newPassword);
+      setPasswordValidationError(!isPasswordValid);
+    } else {
+      setPasswordValidationError(false);
+    }
 
-      !regularExpression.test(value) &&
-        setPasswordValidationError(
-          `Password must be between 6 to 16 characters\n
-          Include atleast:\n
-          1. one uppercase\n
-          2. one lowercase\n
-          3. one number\n
-          4. one special character
-          5. and no spaces`
-        );
+    // compare passwords
+    if (form.confirmPassword) {
+      const isPasswordMatch = form.newPassword === form.confirmPassword;
+      setPasswordMatch(isPasswordMatch);
+    } else {
+      setPasswordMatch(true);
     }
 
     setForm({
@@ -64,11 +81,10 @@ export const UpdatePasswordForm = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    // const email = emailRef.current.value;
     const { confirmPassword, ...rest } = form;
 
     if (rest.newPassword !== confirmPassword) {
-      return toast.error("Password do not match!");
+      return toast.error("Passwords do not match!");
     }
 
     // call api & send data
@@ -78,18 +94,21 @@ export const UpdatePasswordForm = () => {
       pending: "Please wait...",
     });
 
-    const resp = await pending;
-    setResponse(resp);
+    const { status, message } = await pending;
+
+    if (status === "success") {
+      setForm({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    }
+
+    toast[status](message);
   };
 
   return (
     <div>
-      {response.message && (
-        <Alert variant={response.status === "success" ? "success" : "error"}>
-          {response.message}
-        </Alert>
-      )}
-
       <Form className="rounded shadow-lg p-3 mt-3" onSubmit={handleOnSubmit}>
         <h2>Update your password!</h2>
         <hr />
@@ -99,18 +118,36 @@ export const UpdatePasswordForm = () => {
         ))}
 
         <div className="">
+          {!passwordMatch && (
+            <div className="text-danger fw-light p-3">
+              <ListGroup>
+                <ListGroup.Item variant="danger">
+                  Passwords do not match
+                </ListGroup.Item>
+              </ListGroup>
+            </div>
+          )}
+        </div>
+
+        <div className="">
           {passwordValidationError && (
-            <div className="text-danger fw-bold p-3">
-              {passwordValidationError}
+            <div className="text-danger fw-light p-3">
+              <ListGroup>
+                {validationMessage.map((line, index) => (
+                  <ListGroup.Item variant="danger" key={index}>
+                    {line}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
             </div>
           )}
         </div>
 
         <div className="d-grid">
           <Button
-            variant="primary"
+            variant="warning"
             type="submit"
-            disabled={passwordValidationError}
+            disabled={passwordValidationError || !passwordMatch}
           >
             Update password
           </Button>

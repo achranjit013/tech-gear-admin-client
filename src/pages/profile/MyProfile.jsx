@@ -1,19 +1,24 @@
 import React from "react";
 import { AdminLayout } from "../../components/layout/AdminLayout";
 import { UpdatePasswordForm } from "../../components/admin-profile/UpdatePasswordForm";
+import { UpdateProfileForm } from "../../components/admin-profile/UpdateProfileForm";
+import { useSelector } from "react-redux";
+import { UpdateEmailForm } from "../../components/admin-profile/UpdateEmailForm";
 
 const MyProfile = () => {
+  const { admin } = useSelector((state) => state.adminInfo);
+
   return (
-    <AdminLayout title="MyProfile">
+    <AdminLayout title={`Profile (${admin.fname + " " + admin.fname})`}>
       <div>
-        <h5>Update user profile</h5>
-        <hr />
+        <UpdateProfileForm />
       </div>
 
       <div className="mt-5">
-        <h5>Update user password</h5>
-        <hr />
+        <UpdateEmailForm />
+      </div>
 
+      <div className="mt-5">
         <UpdatePasswordForm />
       </div>
     </AdminLayout>

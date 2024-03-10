@@ -133,11 +133,31 @@ export const updatePassword = (data) => {
   });
 };
 
-// update password
+// update admin password
 export const updateUserPassword = (data) => {
   return axiosProcessor({
     method: "patch",
     url: userAPI + "/password-update",
+    data,
+    isPrivate: true,
+  });
+};
+
+// update admin profile
+export const updateAdminProfile = (data) => {
+  return axiosProcessor({
+    method: "patch",
+    url: userAPI + "/profile-update",
+    data,
+    isPrivate: true,
+  });
+};
+
+// update admin email
+export const updateAdminEmail = (data) => {
+  return axiosProcessor({
+    method: "patch",
+    url: userAPI + "/email-update",
     data,
     isPrivate: true,
   });

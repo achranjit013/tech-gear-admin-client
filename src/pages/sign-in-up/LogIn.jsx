@@ -58,8 +58,6 @@ const LogIn = () => {
 
       const { status, message, jwts } = await pending;
 
-      toast[status](message);
-
       if (jwts?.accessJWT) {
         // store the token
         sessionStorage.setItem("accessJWT", jwts.accessJWT);
@@ -67,7 +65,10 @@ const LogIn = () => {
 
         // get user data and store in redux
         dispatch(getUserProfile());
+        return;
       }
+
+      toast[status](message);
     }
   };
 
@@ -96,10 +97,6 @@ const LogIn = () => {
                 Login
               </Button>
             </div>
-
-            {/* <div className="mt-5 text-end">
-              Forget password? <a href="/reset-password">Reset Now</a>
-            </div> */}
           </Form>
 
           <div className="rounded shadow-lg p-3 mt-5 text-end">

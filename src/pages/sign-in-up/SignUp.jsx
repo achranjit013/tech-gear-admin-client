@@ -4,8 +4,6 @@ import CustomInput from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
 import { postNewAdmin } from "../../helpers/axiosHelper";
 import { AdminLayout } from "../../components/layout/AdminLayout";
-import { useDispatch } from "react-redux";
-import { getUserProfile } from "../profile/userAction";
 
 const initialState = {
   fname: "",
@@ -18,7 +16,6 @@ const initialState = {
 };
 
 const SignUp = () => {
-  const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
   const [passwordValidationError, setPasswordValidationError] = useState("");
 

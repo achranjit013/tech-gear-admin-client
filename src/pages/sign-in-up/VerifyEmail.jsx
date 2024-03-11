@@ -24,7 +24,7 @@ const VerifyEmail = () => {
   return (
     <Container fluid>
       <p className="rounded shadow-lg p-3 text-center fw-bold">
-        Welcome to Tech Gear Admin CMS!
+        Welcome to Variété Vortéx Admin CMS!
       </p>
 
       <div className="text-center mt-5">

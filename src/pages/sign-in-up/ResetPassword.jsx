@@ -128,7 +128,7 @@ const ResetPassword = () => {
       <Row className="d-flex justify-content-center align-items-center gap-3 vh-100">
         <Col md={true}>
           <p className="rounded shadow-lg p-3 text-center fw-bold">
-            Welcome to Tech Gear Admin CMS!
+            Welcome to Variété Vortéx Admin CMS!
             <br />
             <br />
             Reset your password here!

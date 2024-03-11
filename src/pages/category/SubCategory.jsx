@@ -32,7 +32,12 @@ const SubCategory = () => {
       if (!categoryId) return toast.error("please provide category");
 
       //dispatch to post in database table and update redux store
-      dispatch(postNewSubCat({ title, categoryId }));
+      const { status } = await dispatch(postNewSubCat({ title, categoryId }));
+
+      if (status === "success") {
+        titleRef.current.value = "";
+        catRef.current.value = "";
+      }
     }
   };
 

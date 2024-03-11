@@ -4,10 +4,7 @@ import CustomInput from "../custom-input/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "../custom-modal/CustomModal";
 import { setShowModal } from "../custom-modal/modalSlice";
-import {
-  updateAdminEmailAction,
-  updateAdminProfileAction,
-} from "../../pages/profile/userAction";
+import { updateAdminEmailAction } from "../../pages/profile/userAction";
 
 export const UpdateEmailForm = () => {
   const dispatch = useDispatch();

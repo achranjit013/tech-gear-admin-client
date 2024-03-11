@@ -22,6 +22,7 @@ export const getAllCats = () => async (dispatch) => {
 
 export const postNewCat = (obj) => async (dispatch) => {
   const pending = postCatgeory(obj);
+
   toast.promise(pending, {
     pending: "Please wait...",
   });
@@ -32,6 +33,7 @@ export const postNewCat = (obj) => async (dispatch) => {
 
   if (status === "success") {
     dispatch(getAllCats());
+    return { status };
   }
 };
 
@@ -88,6 +90,7 @@ export const postNewSubCat = (obj) => async (dispatch) => {
 
   if (status === "success") {
     dispatch(getAllSubCats());
+    return { status };
   }
 };
 

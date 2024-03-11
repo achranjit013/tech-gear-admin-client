@@ -17,11 +17,17 @@ const Category = () => {
       const title = titleRef.current.value;
 
       if (!title) {
-        return toast.error("please provide title");
+        return toast.error(
+          "Please provide an appropriate title for the category."
+        );
       }
 
       //dispatch to post in database table and update redux store
-      dispatch(postNewCat({ title }));
+      const { status } = await dispatch(postNewCat({ title }));
+
+      if (status === "success") {
+        titleRef.current.value = "";
+      }
     }
   };
 

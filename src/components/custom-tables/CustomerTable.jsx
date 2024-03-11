@@ -1,22 +1,8 @@
-import { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteExistingCat,
-  getAllCats,
-} from "../../pages/category/categoryAction";
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import CustomModal from "../custom-modal/CustomModal";
-import { setShowModal } from "../custom-modal/modalSlice";
-import UpdateCategory from "../category/UpdateCategory";
-import { getUserProfile } from "../../pages/profile/userAction";
 import CustomInput from "../custom-input/CustomInput";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { format } from "date-fns";
 
 function CustomerTable({ users }) {
   const [fileteredCustomers, setFilteredCustomers] = useState(users);
@@ -24,19 +10,19 @@ function CustomerTable({ users }) {
   const handleOnSearch = (e) => {
     const filteredResult = users.filter(
       (user) =>
-        user.fname.includes(e.target.value) ||
-        user.lname.includes(e.target.value)
+        user.fname.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        user.lname.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredCustomers(filteredResult);
   };
 
   const obj = {
     name: "search",
-    placeholder: "Search by first and last name",
+    placeholder: "Search by first or last name",
     type: "text",
   };
 
-  return (
+  return fileteredCustomers?.length > 0 ? (
     <>
       <Row className="d-flex justify-content-between align-items-end">
         <Col md={6} className="mb-md-3">
@@ -62,21 +48,7 @@ function CustomerTable({ users }) {
         </thead>
         <tbody>
           {fileteredCustomers.map(
-            (
-              {
-                _id,
-                address,
-                createdAt,
-                email,
-                fname,
-                lname,
-                password,
-                phone,
-                role,
-                status,
-              },
-              i
-            ) => (
+            ({ _id, address, createdAt, email, fname, lname, phone }, i) => (
               <tr key={_id}>
                 <td>{i + 1}</td>
                 <td>
@@ -85,12 +57,16 @@ function CustomerTable({ users }) {
                 <td>{phone}</td>
                 <td>{email}</td>
                 <td>{address}</td>
-                <td>{createdAt.slice(0, 10)}</td>
+                <td>{format(new Date(createdAt), "yyyy/MM/dd")}</td>
               </tr>
             )
           )}
         </tbody>
       </Table>
+    </>
+  ) : (
+    <>
+      <p className="text-center">No data to display!</p>
     </>
   );
 }

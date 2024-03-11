@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Button, Form, ListGroup } from "react-bootstrap";
+import { Button, Form, ListGroup } from "react-bootstrap";
 import CustomInput from "../custom-input/CustomInput";
 import { updateUserPassword } from "../../helpers/axiosHelper";
 import { toast } from "react-toastify";

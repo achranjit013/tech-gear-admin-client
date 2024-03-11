@@ -2,10 +2,8 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useNavigate } from "react-router-dom";
-// import { logoutAdmin } from "../../helper/axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { setAdmin } from "../../pages/signin-signup/adminSlice";
 import { logoutUser } from "../../helpers/axiosHelper";
 import { setAdmin } from "../../pages/profile/userSlice";
 
@@ -13,9 +11,9 @@ export const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { admin } = useSelector((state) => state.adminInfo);
+
   const handleOnLogout = () => {
     // log out from server by removing the access and refresh JWTs
-
     logoutUser(admin?._id);
 
     //clear storages
@@ -24,8 +22,11 @@ export const Header = () => {
 
     // reset store
     dispatch(setAdmin({}));
+
+    // Redirect to the login page
     navigate("/");
   };
+
   return (
     <div>
       <Navbar expand="md" variant="dark" className="bg-dark">

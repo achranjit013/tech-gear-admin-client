@@ -47,7 +47,6 @@ const EditProduct = () => {
   const [btnDisabled, setBtnDisabled] = useState(false);
 
   useEffect(() => {
-    // dispatch(getAllCats());
     dispatch(getAllSubCats());
 
     if (subCatList.length > 0) {
@@ -58,8 +57,12 @@ const EditProduct = () => {
       );
       setFilteredSubCatList(activeSubCategories);
     }
+
     if (_id !== form._id) {
       _id && dispatch(getAProduct(_id));
+    }
+
+    if (selectedProduct?._id) {
       setForm(selectedProduct);
       setRows(selectedProduct.variants);
     }
@@ -257,15 +260,6 @@ const EditProduct = () => {
     const { status } = await dispatch(updateAProduct(_id, formDt));
 
     if (status === "success") {
-      // after update success, populate the form with updated data
-
-      setForm((prevForm) => ({
-        ...prevForm,
-        ...formDt,
-      }));
-
-      setRows(rows);
-
       // Clear the selected images
       setImgs([]);
 
@@ -283,17 +277,15 @@ const EditProduct = () => {
   const getFormattedValue = (value) => {
     let formattedValue;
 
-    if (typeof value === "string") {
+    if (isNaN(value)) {
       const date = parseISO(value); // Convert the string to a Date object
       if (isValid(date) && isDate(date)) {
         formattedValue = format(date, "yyyy-MM-dd"); // Format as date
       } else {
         formattedValue = value; // Use the value as it is if it's not a valid date
       }
-    } else if (typeof value === "number") {
-      formattedValue = value.toString(); // Convert the number to a string
     } else {
-      formattedValue = null; // Handle other types of values
+      formattedValue = value?.toString(); // Convert the number to a string
     }
 
     return formattedValue;
@@ -319,9 +311,6 @@ const EditProduct = () => {
       </div>
 
       <Form className="rounded shadow-lg p-3 mt-3" onSubmit={handleOnSubmit}>
-        <h2>Update product below</h2>
-        <hr />
-
         <Form.Group className="mb-3">
           <Form.Label>Status</Form.Label>
           <Form.Select
